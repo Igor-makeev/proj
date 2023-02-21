@@ -56,7 +56,7 @@ Loop:
 			continue
 
 		case http.StatusOK:
-
+			defer resp.Body.Close()
 			err := json.NewDecoder(resp.Body).Decode(&respData)
 			if err != nil {
 				logrus.Println(err)

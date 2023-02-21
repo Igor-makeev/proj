@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	InvalidLoginOrPassword = errors.New("error: invalid login or password")
-	InvalidOrderInput      = errors.New("error: invalid order number")
-	DontHaveAccess         = errors.New("error: dont have access")
-	InvalidOrderNumber     = errors.New("error: invalid order number")
-	ErrOrdOverLap          = errors.New("error: order already exist")
-	ErrOrdUsrConfl         = errors.New("error: order was added by other customer")
+	ErrInvalidLoginOrPassword = errors.New("error: invalid login or password")
+	ErrInvalidOrderInput      = errors.New("error: invalid order number")
+	ErrDontHaveAccess         = errors.New("error: dont have access")
+	ErrInvalidOrderNumber     = errors.New("error: invalid order number")
+	ErrOrdOverLap             = errors.New("error: order already exist")
+	ErrOrdUsrConfl            = errors.New("error: order was added by other customer")
 )
 
 type LoginConflict struct {

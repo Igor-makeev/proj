@@ -28,7 +28,7 @@ func (h *Handler) register(c *gin.Context) {
 	}
 	token, err := h.service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
 	if err != nil {
-		if ok := errors.Is(myerrors.InvalidLoginOrPassword, err); ok {
+		if ok := errors.Is(myerrors.ErrInvalidLoginOrPassword, err); ok {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}
@@ -50,7 +50,7 @@ func (h *Handler) login(c *gin.Context) {
 
 	token, err := h.service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
 	if err != nil {
-		if ok := errors.Is(myerrors.InvalidLoginOrPassword, err); ok {
+		if ok := errors.Is(myerrors.ErrInvalidLoginOrPassword, err); ok {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}

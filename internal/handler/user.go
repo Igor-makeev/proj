@@ -13,19 +13,19 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 	id, ok := c.Get(userCtx)
 	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess.Error()})
 		return
 	}
 
 	number, err := io.ReadAll(c.Request.Body)
 
 	if err != nil || string(number) == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": myerrors.InvalidOrderInput.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": myerrors.ErrInvalidOrderInput.Error()})
 		return
 	}
 
 	if !luhn.LuhnValidation(string(number)) {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": myerrors.InvalidOrderNumber.Error()})
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": myerrors.ErrInvalidOrderNumber.Error()})
 		return
 	}
 
@@ -49,7 +49,7 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 func (h *Handler) getOrdersList(c *gin.Context) {
 	id, ok := c.Get(userCtx)
 	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess})
 		return
 	}
 
@@ -69,7 +69,7 @@ func (h *Handler) getOrdersList(c *gin.Context) {
 func (h *Handler) getBallance(c *gin.Context) {
 	id, ok := c.Get(userCtx)
 	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess})
 		return
 	}
 	accountState, err := h.service.GetBalance(c.Request.Context(), id.(int))

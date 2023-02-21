@@ -38,7 +38,7 @@ func (r *AuthPostgres) GetUser(ctx context.Context, login, password string) (int
 	if err := r.db.QueryRow(ctx, "select id from users_table where login=$1 and password_hash=$2", login, password).Scan(&userID); err != nil {
 
 		if err == pgx.ErrNoRows {
-			return 0, myerrors.InvalidLoginOrPassword
+			return 0, myerrors.ErrInvalidLoginOrPassword
 		}
 		return 0, err
 
