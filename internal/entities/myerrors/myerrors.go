@@ -10,6 +10,7 @@ import (
 
 var (
 	InvalidLoginOrPassword = errors.New("error: invalid login or password")
+	InvalidOrderInput      = errors.New("error: invalid order number")
 	DontHaveAccess         = errors.New("error: dont have access")
 	InvalidOrderNumber     = errors.New("error: invalid order number")
 	ErrOrdOverLap          = errors.New("error: order already exist")

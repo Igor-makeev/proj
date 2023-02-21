@@ -10,21 +10,22 @@ import (
 )
 
 func (h *Handler) loadOrderNumber(c *gin.Context) {
+
 	id, ok := c.Get(userCtx)
 	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess.Error()})
 		return
 	}
 
 	number, err := io.ReadAll(c.Request.Body)
 
 	if err != nil || string(number) == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, gin.H{"error": myerrors.InvalidOrderInput.Error()})
 		return
 	}
 
-	if ok := luhn.LuhnValidation(string(number)); !ok {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": myerrors.InvalidOrderNumber})
+	if !luhn.LuhnValidation(string(number)) {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": myerrors.InvalidOrderNumber.Error()})
 		return
 	}
 
@@ -32,11 +33,11 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 		switch err {
 		case myerrors.ErrOrdUsrConfl:
-			c.JSON(http.StatusConflict, gin.H{"error": err})
+			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		case myerrors.ErrOrdOverLap:
-			c.JSON(http.StatusOK, gin.H{"error": err})
+			c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		default:
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 
 		}
 		return
