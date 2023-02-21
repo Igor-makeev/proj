@@ -26,6 +26,6 @@ CREATE UNIQUE INDEX if not exists login_index_unique
 `
 var OrderIndex = `
 CREATE UNIQUE INDEX if not exists order_index_unique
-  ON order_table
+  ON orders_table
   USING btree(number);
 `
