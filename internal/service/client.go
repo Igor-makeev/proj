@@ -26,7 +26,7 @@ func NewClient(cfg *config.Config) *Client {
 	client.Timeout = time.Second * 2
 	return &Client{
 		Client:  client,
-		address: cfg.AccrualSyetemAddress,
+		address: cfg.AccrualSystemAddress,
 	}
 }
 

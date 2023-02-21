@@ -19,7 +19,7 @@ func NewHandler(service *service.Service) *Handler {
 
 	api := handler.Router.Group("/api")
 	{
-		auth := handler.Router.Group("/user")
+		auth := api.Group("/user")
 		{
 			auth.POST("/register", handler.register)
 			auth.POST("/login", handler.login)

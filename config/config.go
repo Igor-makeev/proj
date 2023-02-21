@@ -14,7 +14,7 @@ import (
 type Config struct {
 	RunAddress           string `env:"RUN_ADDRESS"`
 	DBURL                string `env:"DATABASE_URI"`
-	AccrualSyetemAddress string `env:"ACCRUAL_SYSTEM_ADDRESS"`
+	AccrualSystemAddress string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 	AuthConfig
 }
 
@@ -36,7 +36,7 @@ func NewConfig() *Config {
 	var cfg Config
 	flag.StringVar(&cfg.RunAddress, "a", "", "server addres to listen on")
 	flag.StringVar(&cfg.DBURL, "d", "", "database connection address")
-	flag.StringVar(&cfg.AccrualSyetemAddress, "r", "", "address of the accrual system")
+	flag.StringVar(&cfg.AccrualSystemAddress, "r", "", "address of the accrual system")
 
 	flag.Parse()
 
@@ -51,7 +51,7 @@ func NewConfig() *Config {
 
 	logrus.Printf("env variable SERVER_ADDRESS=%v", cfg.RunAddress)
 	logrus.Printf("env variable DATABASE_URI=%v", cfg.DBURL)
-	logrus.Printf("env variable ACCRUAL_SYSTEM_ADDRESS=%v", cfg.AccrualSyetemAddress)
+	logrus.Printf("env variable ACCRUAL_SYSTEM_ADDRESS=%v", cfg.AccrualSystemAddress)
 
 	return &cfg
 }
