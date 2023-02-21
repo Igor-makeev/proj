@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/sirupsen/logrus"
 )
 
 type StoragePostgress struct {
@@ -36,4 +37,19 @@ func (sp *StoragePostgress) SaveOrder(ctx context.Context, order models.OrderDTO
 	}
 
 	return nil
+}
+
+func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderDTO) {
+	numberInt, _ := strconv.Atoi(order.Number)
+	_, err := sp.db.Exec(ctx, "update orders_table set status=$1, accrual=$2 where number=$3;", order.Status, order.Accrual, numberInt)
+	if err != nil {
+		logrus.Println(err)
+	}
+	if order.Accrual > 0 {
+		_, err := sp.db.Exec(ctx, "update users_table set ballance=ballance+$1 where id=$2;", order.Accrual, order.UserID)
+		if err != nil {
+			logrus.Println(err)
+		}
+	}
+
 }

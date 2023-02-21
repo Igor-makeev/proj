@@ -15,6 +15,7 @@ type Authorization interface {
 
 type LoyaltyServiceStorage interface {
 	SaveOrder(ctx context.Context, order models.OrderDTO) error
+	OrderUpdate(ctx context.Context, order models.OrderDTO)
 }
 
 type Repository struct {
@@ -24,7 +25,8 @@ type Repository struct {
 
 func NewRepository(db *pgxpool.Pool) *Repository {
 	return &Repository{
-		Authorization: postgress.NewAuthPostgress(db),
+		Authorization:         postgress.NewAuthPostgress(db),
+		LoyaltyServiceStorage: postgress.NewStoragePostgress(db),
 	}
 
 }

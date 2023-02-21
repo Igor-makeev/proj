@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -16,16 +17,16 @@ import (
 )
 
 func main() {
-	// ctx := context.Background()
+	ctx := context.Background()
 	cfg := config.NewConfig()
 
 	pc, err := postgress.NewPostgresClient(cfg)
 	if err != nil {
 		logrus.Fatalf("error:%v", err)
 	}
-
+	client := service.NewClient(cfg)
 	repo := repository.NewRepository(pc)
-	service := service.NewService(repo, cfg)
+	service := service.NewService(ctx, repo, cfg, client)
 	handler := handler.NewHandler(service)
 
 	srv := new(server.Server)

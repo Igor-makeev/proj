@@ -15,7 +15,7 @@ type LoyaltyService struct {
 func NewLoyaltyService(ctx context.Context, repo *repository.Repository, client *Client) *LoyaltyService {
 	return &LoyaltyService{
 		repo:  repo,
-		queue: NewQueue(ctx, client),
+		queue: NewQueue(ctx, client, repo),
 	}
 }
 
@@ -33,4 +33,8 @@ func (ls *LoyaltyService) SaveOrder(ctx context.Context, number string, id int) 
 	}
 	ls.queue.buf <- neworder
 	return nil
+}
+
+func (ls *LoyaltyService) OrderUpdate(ctx context.Context, order models.OrderDTO) {
+	ls.repo.OrderUpdate(ctx, order)
 }

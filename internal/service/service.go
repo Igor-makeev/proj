@@ -22,8 +22,10 @@ type Service struct {
 	LoyaltyServicer
 }
 
-func NewService(repo *repository.Repository, cfg *config.Config) *Service {
+func NewService(ctx context.Context, repo *repository.Repository, cfg *config.Config, client *Client) *Service {
+
 	return &Service{
-		Authorization: NewAuthService(repo, cfg),
+		Authorization:   NewAuthService(repo, cfg),
+		LoyaltyServicer: NewLoyaltyService(ctx, repo, client),
 	}
 }
