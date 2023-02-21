@@ -23,7 +23,7 @@ func (h *Handler) useridentity(c *gin.Context) {
 		myerrors.NewErorResponse(c, http.StatusUnauthorized, "invalid auth header")
 		return
 	}
-	userID, err := h.Service.ParseToken(headerParts[1])
+	userID, err := h.service.ParseToken(headerParts[1])
 	if err != nil {
 		myerrors.NewErorResponse(c, http.StatusUnauthorized, err.Error())
 		return

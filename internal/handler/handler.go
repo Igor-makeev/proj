@@ -7,14 +7,14 @@ import (
 )
 
 type Handler struct {
-	Service *service.Service
+	service *service.Service
 	Router  *gin.Engine
 }
 
 func NewHandler(service *service.Service) *Handler {
 	handler := &Handler{
 		Router:  gin.New(),
-		Service: service,
+		service: service,
 	}
 
 	api := handler.Router.Group("/api")
@@ -26,7 +26,7 @@ func NewHandler(service *service.Service) *Handler {
 		}
 		user := api.Group("/user", handler.useridentity)
 		{
-			user.POST("/orders", handler.loadOrerNumber)
+			user.POST("/orders", handler.loadOrderNumber)
 			user.GET("/orders", handler.getOrdersList)
 			user.GET("/balance", handler.getBallance)
 			user.POST("/balance/withdraw", handler.withdrawRequest)

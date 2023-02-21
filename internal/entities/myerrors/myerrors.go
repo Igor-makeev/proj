@@ -1,10 +1,19 @@
 package myerrors
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+)
+
+var (
+	InvalidLoginOrPassword = errors.New("error: invalid login or password")
+	DontHaveAccess         = errors.New("error: dont have access")
+	InvalidOrderNumber     = errors.New("error: invalid order number")
+	ErrOrdOverLap          = errors.New("error: order already exist")
+	ErrOrdUsrConfl         = errors.New("error: order was added by other customer")
 )
 
 type LoginConflict struct {
@@ -13,13 +22,6 @@ type LoginConflict struct {
 
 func (lc *LoginConflict) Error() string {
 	return fmt.Sprintf("error: user with login:%v, has already exists", lc.Elem)
-}
-
-type InvalidLoginOrPassword struct {
-}
-
-func (ilop *InvalidLoginOrPassword) Error() string {
-	return "error: wrong login or password"
 }
 
 type statusResponse struct {

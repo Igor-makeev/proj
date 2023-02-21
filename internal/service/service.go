@@ -13,8 +13,13 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
+type LoyaltyServicer interface {
+	SaveOrder(ctx context.Context, number string, id int) error
+}
+
 type Service struct {
 	Authorization
+	LoyaltyServicer
 }
 
 func NewService(repo *repository.Repository, cfg *config.Config) *Service {

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"proj/internal/entities/models"
 	"proj/internal/entities/myerrors"
@@ -16,7 +17,7 @@ func (h *Handler) register(c *gin.Context) {
 		return
 	}
 
-	err := h.Service.Authorization.CreateUser(c.Request.Context(), input)
+	err := h.service.Authorization.CreateUser(c.Request.Context(), input)
 	if err != nil {
 		if _, ok := err.(*myerrors.LoginConflict); ok {
 			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
@@ -25,9 +26,9 @@ func (h *Handler) register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	token, err := h.Service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
+	token, err := h.service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
 	if err != nil {
-		if _, ok := err.(*myerrors.InvalidLoginOrPassword); ok {
+		if ok := errors.Is(myerrors.InvalidLoginOrPassword, err); ok {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}
@@ -47,9 +48,9 @@ func (h *Handler) login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.Service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
+	token, err := h.service.Authorization.GenerateToken(c.Request.Context(), input.Login, input.Password)
 	if err != nil {
-		if _, ok := err.(*myerrors.InvalidLoginOrPassword); ok {
+		if ok := errors.Is(myerrors.InvalidLoginOrPassword, err); ok {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 			return
 		}

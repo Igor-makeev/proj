@@ -27,5 +27,8 @@ func NewPostgresClient(cfg *config.Config) (*pgxpool.Pool, error) {
 	if _, err := conn.Exec(context.Background(), ordersTableSchema); err != nil {
 		logrus.Print(err)
 	}
+	if _, err := conn.Exec(context.Background(), OrderIndex); err != nil {
+		logrus.Print(err)
+	}
 	return conn, err
 }

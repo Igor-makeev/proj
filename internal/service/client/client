@@ -1,0 +1,36 @@
+package service
+
+import (
+	"bytes"
+	"encoding/json"
+
+	"net/http"
+	"time"
+
+	"github.com/sirupsen/logrus"
+)
+
+const maxAttempts = 10
+
+type Client struct {
+	Client  *http.Client
+	address string
+}
+
+func NewClient(cfg *config.Config) *Client {
+	client := &http.Client{}
+	transport := &http.Transport{}
+	transport.MaxIdleConns = 20
+	client.Transport = transport
+	client.Timeout = time.Second * 2
+	return &Client{
+		Client: client,
+		address: cfg.AccrualSyetemAddress
+	}
+}
+
+func (p *MyProvider) DoRequest(orderNumber string) {
+	url := fmt.Sprint(c.address, "/api/orders/", order)
+	resp, err := c.client.Get(url)
+
+}
