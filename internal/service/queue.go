@@ -59,6 +59,7 @@ func (q *Queue) distribute(ctx context.Context, order models.OrderDTO) {
 	case models.StatusInvalid:
 		q.updater.OrderUpdate(ctx, order)
 	case models.StatusProcessing:
+		q.updater.OrderUpdate(ctx, order)
 		q.communicator.DoRequest(order.Number, order.UserID, q.buf)
 	case models.StatusProcessed:
 		q.updater.OrderUpdate(ctx, order)
