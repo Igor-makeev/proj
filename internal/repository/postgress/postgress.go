@@ -17,9 +17,15 @@ func NewPostgresClient(cfg *config.Config) (*pgxpool.Pool, error) {
 		logrus.Printf("Unable to connect to database: %v\n", err)
 		return nil, err
 	}
-	_, err = conn.Exec(context.Background(), usersTableSchema)
-	logrus.Print(err)
-	_, err = conn.Exec(context.Background(), Index)
-	logrus.Print(err)
+	if _, err := conn.Exec(context.Background(), usersTableSchema); err != nil {
+		logrus.Print(err)
+	}
+
+	if _, err := conn.Exec(context.Background(), LoginIndex); err != nil {
+		logrus.Print(err)
+	}
+	if _, err := conn.Exec(context.Background(), ordersTableSchema); err != nil {
+		logrus.Print(err)
+	}
 	return conn, err
 }

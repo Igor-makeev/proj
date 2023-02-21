@@ -8,7 +8,17 @@ CREATE TABLE if not exists users_table
     password_hash varchar(255) not null
 );`
 
-var Index = `
+const ordersTableSchema = `
+CREATE TABLE if not exists orders_table
+(
+    user_id int references users_table(id) on delete cascade not null,
+    number int not null unique,
+    status varchar(10) not null,
+	  accrual integer,
+	Initiated_at timestamp
+);`
+
+var LoginIndex = `
 CREATE UNIQUE INDEX if not exists login_index_unique
   ON users_table
   USING btree(login);
