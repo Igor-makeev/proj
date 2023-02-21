@@ -38,3 +38,12 @@ func (ls *LoyaltyService) SaveOrder(ctx context.Context, number string, id int) 
 func (ls *LoyaltyService) OrderUpdate(ctx context.Context, order models.OrderDTO) {
 	ls.repo.OrderUpdate(ctx, order)
 }
+
+func (ls *LoyaltyService) GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error) {
+
+	return ls.repo.GetOrders(ctx, id)
+}
+
+func (ls *LoyaltyService) GetBalance(ctx context.Context, id int) (*models.UserBallance, error) {
+	return ls.repo.GetBalance(ctx, id)
+}

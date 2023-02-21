@@ -53,3 +53,32 @@ func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderD
 	}
 
 }
+func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error) {
+
+	rows, err := sp.db.Query(ctx, "select number, status, accrual, uploaded_at from orders_table	where user_id=$1;", id)
+	if err != nil {
+
+		return nil, err
+	}
+	var list = make([]models.OrderDTO, 0, 10)
+	for rows.Next() {
+		var order models.OrderDTO
+		err := rows.Scan(&order.Number, &order.Status, &order.Accrual, &order.UploadedAt)
+		if err != nil {
+
+			return nil, err
+		}
+
+		list = append(list, order)
+	}
+	return list, nil
+}
+
+func (sp *StoragePostgress) GetBalance(ctx context.Context, id int) (*models.UserBallance, error) {
+	var balance models.UserBallance
+	err := sp.db.QueryRow(context.Background(), "select current, withdrawn from users_table	where id=$1;", id).Scan(&balance.Current, &balance.Withdrawn)
+	if err != nil {
+		return nil, err
+	}
+	return &balance, nil
+}

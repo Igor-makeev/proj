@@ -15,6 +15,8 @@ type Authorization interface {
 
 type LoyaltyServicer interface {
 	SaveOrder(ctx context.Context, number string, id int) error
+	GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error)
+	GetBalance(ctx context.Context, id int) (*models.UserBallance, error)
 }
 
 type Service struct {

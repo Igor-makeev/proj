@@ -16,6 +16,8 @@ type Authorization interface {
 type LoyaltyServiceStorage interface {
 	SaveOrder(ctx context.Context, order models.OrderDTO) error
 	OrderUpdate(ctx context.Context, order models.OrderDTO)
+	GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error)
+	GetBalance(ctx context.Context, id int) (*models.UserBallance, error)
 }
 
 type Repository struct {

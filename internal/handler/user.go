@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"proj/internal/entities/myerrors"
 	"proj/pkg/luhn"
@@ -16,7 +16,7 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 		return
 	}
 
-	number, err := ioutil.ReadAll(c.Request.Body)
+	number, err := io.ReadAll(c.Request.Body)
 
 	if err != nil || string(number) == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -46,11 +46,38 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 }
 
 func (h *Handler) getOrdersList(c *gin.Context) {
+	id, ok := c.Get(userCtx)
+	if !ok && id == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess})
+		return
+	}
+
+	ordersList, err := h.service.GetOrders(c.Request.Context(), id.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if len(ordersList) == 0 {
+		c.JSON(http.StatusNoContent, gin.H{"Info": "Oredrs not found"})
+		return
+	}
+	c.JSON(http.StatusOK, ordersList)
 
 }
 
 func (h *Handler) getBallance(c *gin.Context) {
+	id, ok := c.Get(userCtx)
+	if !ok && id == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.DontHaveAccess})
+		return
+	}
+	accountState, err := h.service.GetBalance(c.Request.Context(), id.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
 
+	c.JSON(http.StatusOK, *accountState)
 }
 
 func (h *Handler) withdrawRequest(c *gin.Context) {

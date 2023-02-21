@@ -39,6 +39,7 @@ func NewConfig() *Config {
 	flag.StringVar(&cfg.AccrualSyetemAddress, "r", "", "address of the accrual system")
 
 	flag.Parse()
+
 	if err := godotenv.Load(); err != nil {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
