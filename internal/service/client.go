@@ -42,7 +42,7 @@ Loop:
 		}
 		switch resp.StatusCode {
 		case http.StatusNoContent:
-
+			logrus.Print("no")
 			respData.UserID = UserID
 			respData.Number = orderNumber
 			respData.Status = models.StatusInvalid
@@ -50,6 +50,7 @@ Loop:
 			break Loop
 
 		case http.StatusTooManyRequests:
+			logrus.Print("time to sleep")
 			retry, err := strconv.Atoi(resp.Header.Get("Retry-After"))
 			if err != nil {
 				logrus.Print(err)
@@ -58,6 +59,7 @@ Loop:
 			continue
 
 		case http.StatusOK:
+			logrus.Print("success")
 			defer resp.Body.Close()
 			err := json.NewDecoder(resp.Body).Decode(&respData)
 			if err != nil {
@@ -68,6 +70,7 @@ Loop:
 			break Loop
 
 		case http.StatusInternalServerError:
+			logrus.Print("mistakes")
 			continue
 		}
 
