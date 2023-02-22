@@ -12,7 +12,7 @@ import (
 func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 	id, ok := c.Get(userCtx)
-	if !ok && id == "" {
+	if !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess.Error()})
 		return
 	}
