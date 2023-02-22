@@ -6,7 +6,7 @@ import (
 
 type OrderDTO struct {
 	UserID     int       `json:"-"`
-	Number     string    `json:"number"`
+	Number     string    `json:"number,string"`
 	Status     string    `json:"status"`
 	Accrual    float64   `json:"accrual,omitempty"`
 	UploadedAt time.Time `json:"uploaded_at"`
