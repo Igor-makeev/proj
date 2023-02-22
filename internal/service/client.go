@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"proj/config"
 	"proj/internal/entities/models"
-	"strconv"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -48,11 +47,8 @@ Loop:
 			break Loop
 
 		case http.StatusTooManyRequests:
-			retryTime, err := strconv.Atoi(resp.Header.Get("Retry-After"))
-			if err != nil {
-				logrus.Println(err)
-			}
-			time.Sleep(time.Second * time.Duration(retryTime))
+
+			time.Sleep(time.Second * 5)
 			continue
 
 		case http.StatusOK:
