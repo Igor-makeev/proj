@@ -33,10 +33,13 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 		switch err {
 		case myerrors.ErrOrdUsrConfl:
+
 			c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		case myerrors.ErrOrdOverLap:
+
 			c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		default:
+
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 
 		}

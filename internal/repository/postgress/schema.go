@@ -14,7 +14,7 @@ const ordersTableSchema = `
 CREATE TABLE if not exists orders_table
 (
     user_id int references users_table(id) on delete cascade not null,
-    number int not null unique,
+    number bigint not null unique,
     status varchar(10) not null,
 	  accrual float,
     uploaded_at timestamp

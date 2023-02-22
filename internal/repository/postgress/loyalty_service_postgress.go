@@ -23,14 +23,15 @@ func (sp *StoragePostgress) SaveOrder(ctx context.Context, order models.OrderDTO
 	numberInt, _ := strconv.Atoi(order.Number)
 	var timeFromDB time.Time
 	timeCreated := time.Now()
-	var idFromDB int
+	var idFromDB int64
 	err := sp.db.QueryRow(ctx, "insert into orders_table (user_id,number,status,accrual,uploaded_at) values($1,$2,$3,$4,$5)on conflict (number) do update set number =EXCLUDED.number returning user_id,uploaded_at;", order.UserID, numberInt, order.Status, order.Accrual, order.UploadedAt).Scan(&idFromDB, &timeFromDB)
 	if err != nil {
+
 		return err
 	}
 
 	if timeCreated.Format(time.StampMilli) != timeFromDB.Format(time.StampMilli) {
-		if idFromDB != order.UserID {
+		if idFromDB != int64(order.UserID) {
 			return myerrors.ErrOrdUsrConfl
 		}
 		return myerrors.ErrOrdOverLap
