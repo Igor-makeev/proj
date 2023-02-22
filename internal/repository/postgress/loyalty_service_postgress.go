@@ -61,7 +61,7 @@ func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.Ord
 
 		return nil, err
 	}
-	var list = make([]models.OrderDTO, 0, 10)
+	var list = make([]models.OrderDTO, 0, 100)
 	for rows.Next() {
 
 		var order models.OrderDTO
