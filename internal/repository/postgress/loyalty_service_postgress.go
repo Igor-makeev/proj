@@ -63,13 +63,16 @@ func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.Ord
 	}
 	var list = make([]models.OrderDTO, 0, 10)
 	for rows.Next() {
+
 		var order models.OrderDTO
-		err := rows.Scan(&order.Number, &order.Status, &order.Accrual, &order.UploadedAt)
+		var number int
+
+		err := rows.Scan(&number, &order.Status, &order.Accrual, &order.UploadedAt)
 		if err != nil {
 
 			return nil, err
 		}
-
+		order.Number = strconv.Itoa(number)
 		list = append(list, order)
 	}
 	return list, nil
