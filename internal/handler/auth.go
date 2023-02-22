@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"proj/internal/entities/models"
 	"proj/internal/entities/myerrors"
@@ -57,6 +58,6 @@ func (h *Handler) login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.Header(authorizationHeader, token)
+	c.Header(authorizationHeader, fmt.Sprintf("Bearer %s", token))
 	c.Status(http.StatusOK)
 }
