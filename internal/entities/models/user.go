@@ -11,6 +11,6 @@ type SignInInput struct {
 }
 
 type UserBallance struct {
-	Current   string `json:"current" binding:"required"`
-	Withdrawn string `json:"withdrawn" binding:"required"`
+	Current   float64 `json:"current" binding:"required"`
+	Withdrawn float64 `json:"withdrawn" binding:"required"`
 }

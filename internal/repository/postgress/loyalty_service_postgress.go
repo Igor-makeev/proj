@@ -50,7 +50,7 @@ func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderD
 		logrus.Println("+accrual")
 		logrus.Println(order.Accrual)
 		logrus.Println(order.Status)
-		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where id=$2;", order.Accrual, order.UserID)
+		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where number=$2;", order.Accrual, numberInt)
 		if err != nil {
 			logrus.Println(err)
 		}
@@ -83,11 +83,11 @@ func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.Ord
 
 func (sp *StoragePostgress) GetBalance(ctx context.Context, id int) (*models.UserBallance, error) {
 	var balance models.UserBallance
-	logrus.Print(balance)
-	err := sp.db.QueryRow(context.Background(), "select current_ballance, withdrawn from users_table	where id=$1;", id).Scan(&balance.Current, &balance.Withdrawn)
+
+	err := sp.db.QueryRow(ctx, "select current_ballance, withdrawn from users_table	where id=$1;", id).Scan(&balance.Current, &balance.Withdrawn)
 	if err != nil {
 		return nil, err
 	}
-	logrus.Print(balance)
+
 	return &balance, nil
 }
