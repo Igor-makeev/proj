@@ -80,7 +80,7 @@ func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.Ord
 
 func (sp *StoragePostgress) GetBalance(ctx context.Context, id int) (*models.UserBallance, error) {
 	var balance models.UserBallance
-	err := sp.db.QueryRow(context.Background(), "select current, withdrawn from users_table	where id=$1;", id).Scan(&balance.Current, &balance.Withdrawn)
+	err := sp.db.QueryRow(context.Background(), "select current_ballance, withdrawn from users_table	where id=$1;", id).Scan(&balance.Current, &balance.Withdrawn)
 	if err != nil {
 		return nil, err
 	}
