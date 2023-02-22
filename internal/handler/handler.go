@@ -24,7 +24,8 @@ func NewHandler(service *service.Service) *Handler {
 			auth.POST("/register", handler.register)
 			auth.POST("/login", handler.login)
 		}
-		user := api.Group("/user", handler.useridentity)
+
+		user := api.Group("/user").Use(handler.useridentity)
 		{
 			user.POST("/orders", handler.loadOrderNumber)
 			user.GET("/orders", handler.getOrdersList)
