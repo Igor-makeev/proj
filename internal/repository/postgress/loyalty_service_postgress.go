@@ -54,7 +54,7 @@ func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderD
 		logrus.Println(order.Accrual)
 		logrus.Println(order.Status)
 		logrus.Println(order.UserID)
-		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where id=$2;", order.Accrual, order.UserID)
+		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where id=(select user_id from orders_table where number=$2);", order.Accrual, numberInt)
 		if err != nil {
 
 			logrus.Println(err)
