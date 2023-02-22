@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 	"proj/internal/entities/myerrors"
@@ -66,12 +65,8 @@ func (h *Handler) getOrdersList(c *gin.Context) {
 		c.JSON(http.StatusNoContent, gin.H{"Info": "Oredrs not found"})
 		return
 	}
-	bodyOrders, err := json.Marshal(ordersList)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, bodyOrders)
+
+	c.JSON(http.StatusOK, ordersList)
 
 }
 
