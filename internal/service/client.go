@@ -67,6 +67,7 @@ Loop:
 			}
 			logrus.Print(respData)
 			logrus.Print(respData.Number)
+			respData.Number = orderNumber
 			respData.UserID = UserID
 			out <- respData
 			break Loop
