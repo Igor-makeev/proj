@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"proj/config"
 	"proj/internal/entities/models"
+	"strconv"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -41,14 +42,19 @@ Loop:
 		}
 		switch resp.StatusCode {
 		case http.StatusNoContent:
+
 			respData.UserID = UserID
 			respData.Number = orderNumber
 			respData.Status = models.StatusInvalid
+			out <- respData
 			break Loop
 
 		case http.StatusTooManyRequests:
-
-			time.Sleep(time.Second * 5)
+			retry, err := strconv.Atoi(resp.Header.Get("Retry-After"))
+			if err != nil {
+				logrus.Print(err)
+			}
+			time.Sleep(time.Second * time.Duration(retry))
 			continue
 
 		case http.StatusOK:
@@ -58,11 +64,13 @@ Loop:
 				logrus.Println(err)
 			}
 			respData.UserID = UserID
+			out <- respData
 			break Loop
 
 		case http.StatusInternalServerError:
 			continue
 		}
+
 	}
-	out <- respData
+
 }

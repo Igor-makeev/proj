@@ -9,7 +9,6 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v5 v5.3.0
-	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.0
 )
 

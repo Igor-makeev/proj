@@ -16,7 +16,7 @@ func NewHandler(service *service.Service) *Handler {
 		Router:  gin.New(),
 		service: service,
 	}
-	handler.Router.Use(handler.JSONMiddleware())
+
 	api := handler.Router.Group("/api")
 	{
 		auth := api.Group("/user")
