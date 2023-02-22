@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/caarlos0/env"
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -39,10 +38,6 @@ func NewConfig() *Config {
 	flag.StringVar(&cfg.AccrualSystemAddress, "r", "127.0.0.1:8000", "address of the accrual system")
 
 	flag.Parse()
-
-	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("error loading env variables: %s", err.Error())
-	}
 
 	err := env.Parse(&cfg)
 	if err != nil {
