@@ -6,8 +6,8 @@ CREATE TABLE if not exists users_table
     id serial not null unique,
     login varchar(255) not null unique,
     password_hash varchar(255) not null,
-    current_ballance float,
-    withdrawn float
+    current_ballance float DEFAULT 0.0,
+    withdrawn float DEFAULT 0.0
 );`
 
 const ordersTableSchema = `

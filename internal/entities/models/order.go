@@ -13,9 +13,9 @@ type OrderDTO struct {
 }
 
 var (
-	StatusNew         = "NEW"
-	StatusRegistering = "REGISTERED"
-	StatusInvalid     = "INVALID"
-	StatusProcessing  = "PROCESSING"
-	StatusProcessed   = "PROCESSED"
+	StatusNew         = `NEW`
+	StatusRegistering = `REGISTERED`
+	StatusInvalid     = `INVALID`
+	StatusProcessing  = `PROCESSING`
+	StatusProcessed   = `PROCESSED`
 )
