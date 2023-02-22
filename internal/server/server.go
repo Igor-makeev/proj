@@ -16,11 +16,8 @@ type Server struct {
 func (s *Server) Run(cfg *config.Config, handler *handler.Handler) chan error {
 	serverErr := make(chan error)
 	s.httpServer = &http.Server{
-		Addr:           cfg.RunAddress,
-		Handler:        handler.Router,
-		MaxHeaderBytes: 1 << 20, //1 mb
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		Addr:    cfg.RunAddress,
+		Handler: handler.Router,
 	}
 	go func() {
 		if err := s.httpServer.ListenAndServe(); err != http.ErrServerClosed {

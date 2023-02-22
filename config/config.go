@@ -36,7 +36,7 @@ func NewConfig() *Config {
 	var cfg Config
 	flag.StringVar(&cfg.RunAddress, "a", "127.0.0.1:8080", "server addres to listen on")
 	flag.StringVar(&cfg.DBURL, "d", "", "database connection address")
-	flag.StringVar(&cfg.AccrualSystemAddress, "r", "", "address of the accrual system")
+	flag.StringVar(&cfg.AccrualSystemAddress, "r", "127.0.0.1:8000", "address of the accrual system")
 
 	flag.Parse()
 
