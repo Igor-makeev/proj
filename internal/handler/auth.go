@@ -37,7 +37,7 @@ func (h *Handler) register(c *gin.Context) {
 		return
 	}
 
-	c.Header(authorizationHeader, token)
+	c.Header(authorizationHeader, fmt.Sprintf("Bearer %s", token))
 	c.Status(http.StatusOK)
 }
 
