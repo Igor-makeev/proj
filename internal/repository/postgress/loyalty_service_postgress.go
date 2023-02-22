@@ -88,5 +88,6 @@ func (sp *StoragePostgress) GetBalance(ctx context.Context, id int) (*models.Use
 	if err != nil {
 		return nil, err
 	}
+	logrus.Print(balance)
 	return &balance, nil
 }
