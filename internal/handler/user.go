@@ -51,8 +51,8 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 func (h *Handler) getOrdersList(c *gin.Context) {
 	id, ok := c.Get(userCtx)
-	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess})
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess.Error()})
 		return
 	}
 
@@ -72,8 +72,8 @@ func (h *Handler) getOrdersList(c *gin.Context) {
 
 func (h *Handler) getBallance(c *gin.Context) {
 	id, ok := c.Get(userCtx)
-	if !ok && id == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess})
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess.Error()})
 		return
 	}
 	accountState, err := h.service.GetBalance(c.Request.Context(), id.(int))
