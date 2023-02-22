@@ -53,15 +53,15 @@ func (q *Queue) listen(ctx context.Context) {
 }
 
 func (q *Queue) distribute(ctx context.Context, order models.OrderDTO) {
-	switch order.Status {
-	case models.StatusNew:
+	switch {
+	case order.Status == models.StatusNew:
 		q.communicator.DoRequest(order.Number, order.UserID, q.buf)
-	case models.StatusInvalid:
+	case order.Status == models.StatusInvalid:
 		q.updater.OrderUpdate(ctx, order)
-	case models.StatusProcessing:
+	case order.Status == models.StatusProcessing:
 		q.updater.OrderUpdate(ctx, order)
 		q.communicator.DoRequest(order.Number, order.UserID, q.buf)
-	case models.StatusProcessed:
+	case order.Status == models.StatusProcessed:
 		q.updater.OrderUpdate(ctx, order)
 	}
 }
