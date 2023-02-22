@@ -42,6 +42,9 @@ func (sp *StoragePostgress) SaveOrder(ctx context.Context, order models.OrderDTO
 
 func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderDTO) {
 	numberInt, _ := strconv.Atoi(order.Number)
+	logrus.Print(order.Status)
+	logrus.Print(order.Accrual)
+	logrus.Print(numberInt)
 	_, err := sp.db.Exec(ctx, "update orders_table set status=$1, accrual=$2 where number=$3;", order.Status, order.Accrual, numberInt)
 	if err != nil {
 		logrus.Println(err)
@@ -50,7 +53,7 @@ func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderD
 		logrus.Println("+accrual")
 		logrus.Println(order.Accrual)
 		logrus.Println(order.Status)
-		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where number=$2;", order.Accrual, numberInt)
+		err := sp.db.QueryRow(ctx, "update users_table set current_ballance=current_ballance+$1 where id=$2;", order.Accrual, order.UserID)
 		if err != nil {
 			logrus.Println(err)
 		}
@@ -59,7 +62,7 @@ func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderD
 }
 func (sp *StoragePostgress) GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error) {
 
-	rows, err := sp.db.Query(ctx, "select number, status, accrual, uploaded_at from orders_table	where user_id=$1;", id)
+	rows, err := sp.db.Query(ctx, "select number, status, accrual, uploaded_at from orders_table where user_id=$1;", id)
 	if err != nil {
 
 		return nil, err

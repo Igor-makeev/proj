@@ -7,6 +7,7 @@ import (
 	"proj/pkg/luhn"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func (h *Handler) loadOrderNumber(c *gin.Context) {
@@ -23,7 +24,7 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": myerrors.ErrInvalidOrderInput.Error()})
 		return
 	}
-
+	logrus.Print(number)
 	if !luhn.LuhnValidation(string(number)) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": myerrors.ErrInvalidOrderNumber.Error()})
 		return
