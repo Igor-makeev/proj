@@ -19,7 +19,7 @@ func (h *Handler) loadOrderNumber(c *gin.Context) {
 
 	number, err := io.ReadAll(c.Request.Body)
 
-	if err != nil || string(number) == "" {
+	if err != nil || len(number) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": myerrors.ErrInvalidOrderInput.Error()})
 		return
 	}
