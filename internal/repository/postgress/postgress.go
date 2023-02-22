@@ -10,7 +10,7 @@ import (
 )
 
 func NewPostgresClient(cfg *config.Config) (*pgxpool.Pool, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*20)
 	defer cancel()
 	conn, err := pgxpool.New(ctx, cfg.DBURL)
 	if err != nil {
