@@ -65,7 +65,7 @@ func (h *Handler) getOrdersList(c *gin.Context) {
 		c.JSON(http.StatusNoContent, gin.H{"Info": "Oredrs not found"})
 		return
 	}
-
+	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, ordersList)
 
 }
