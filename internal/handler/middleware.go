@@ -42,3 +42,10 @@ func (h *Handler) useridentity() gin.HandlerFunc {
 	}
 
 }
+
+func (h *Handler) JSONMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Content-Type", "application/json")
+		c.Next()
+	}
+}
