@@ -15,6 +15,7 @@ var (
 	ErrInvalidOrderNumber     = errors.New("error: invalid order number")
 	ErrOrdOverLap             = errors.New("error: order already exist")
 	ErrOrdUsrConfl            = errors.New("error: order was added by other customer")
+	ErrNoMoney                = errors.New("not enough funds")
 )
 
 type LoginConflict struct {

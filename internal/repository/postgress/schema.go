@@ -10,6 +10,15 @@ CREATE TABLE if not exists users_table
     withdrawn float DEFAULT 0.0
 );`
 
+const withdrawalTalbeSchema = `
+CREATE TABLE if not exists withdrawal_table
+(
+  number bigint not null unique,
+  sum float DEFAULT 0.0,
+  uploaded_at timestamp
+ 
+);`
+
 const ordersTableSchema = `
 CREATE TABLE if not exists orders_table
 (

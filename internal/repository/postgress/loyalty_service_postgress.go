@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 )
@@ -95,4 +96,32 @@ func (sp *StoragePostgress) GetBalance(ctx context.Context, id int) (*models.Use
 	}
 
 	return &balance, nil
+}
+
+func (sp *StoragePostgress) Withdraw(ctx context.Context, withdraw models.Withdrawal, id int) error {
+
+	numberInt, _ := strconv.Atoi(withdraw.OrderNumber)
+	tx, err := sp.db.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+
+		return err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback(context.Background())
+		} else {
+			tx.Commit(context.Background())
+		}
+	}()
+	_, err = sp.db.Exec(ctx, "insert into withdrawal_table (number,sum,uploaded_at) values($1,$2,$3);", numberInt, withdraw.Sum, time.Now())
+	if err != nil {
+		return err
+	}
+
+	_, err = sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance-$1, withdrawn=withdrawn+$1 where id=$2;", withdraw.Sum, id)
+	if err != nil {
+
+		return err
+	}
+	return nil
 }

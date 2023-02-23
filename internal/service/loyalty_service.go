@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 	"proj/internal/entities/models"
+	"proj/internal/entities/myerrors"
 	"proj/internal/repository"
+	"proj/pkg/luhn"
 	"time"
 )
 
@@ -46,4 +48,25 @@ func (ls *LoyaltyService) GetOrders(ctx context.Context, id int) ([]models.Order
 
 func (ls *LoyaltyService) GetBalance(ctx context.Context, id int) (*models.UserBallance, error) {
 	return ls.repo.GetBalance(ctx, id)
+}
+
+func (ls *LoyaltyService) Withdraw(ctx context.Context, withdraw models.Withdrawal, id int) error {
+	if !luhn.LuhnValidation(string(withdraw.OrderNumber)) {
+		return myerrors.ErrInvalidOrderNumber
+
+	}
+
+	accountState, err := ls.repo.GetBalance(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if accountState.Current < withdraw.Sum {
+		return myerrors.ErrNoMoney
+	}
+
+	if err := ls.repo.Withdraw(ctx, withdraw, id); err != nil {
+		return err
+	}
+	return nil
 }

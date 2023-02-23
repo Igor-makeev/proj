@@ -20,7 +20,9 @@ func NewPostgresClient(cfg *config.Config) (*pgxpool.Pool, error) {
 	if _, err := conn.Exec(context.Background(), usersTableSchema); err != nil {
 		logrus.Print(err)
 	}
-
+	if _, err := conn.Exec(context.Background(), withdrawalTalbeSchema); err != nil {
+		logrus.Print(err)
+	}
 	if _, err := conn.Exec(context.Background(), LoginIndex); err != nil {
 		logrus.Print(err)
 	}
@@ -30,5 +32,6 @@ func NewPostgresClient(cfg *config.Config) (*pgxpool.Pool, error) {
 	if _, err := conn.Exec(context.Background(), OrderIndex); err != nil {
 		logrus.Print(err)
 	}
+
 	return conn, err
 }

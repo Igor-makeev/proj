@@ -18,6 +18,7 @@ type LoyaltyServiceStorage interface {
 	OrderUpdate(ctx context.Context, order models.OrderDTO)
 	GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error)
 	GetBalance(ctx context.Context, id int) (*models.UserBallance, error)
+	Withdraw(ctx context.Context, withdraw models.Withdrawal, id int) error
 }
 
 type Repository struct {
