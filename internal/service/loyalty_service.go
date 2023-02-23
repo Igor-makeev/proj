@@ -70,3 +70,8 @@ func (ls *LoyaltyService) Withdraw(ctx context.Context, withdraw models.Withdraw
 	}
 	return nil
 }
+
+func (ls *LoyaltyService) GetWithdrawals(ctx context.Context, id int) ([]models.Withdrawal, error) {
+
+	return ls.repo.GetWithdrawals(ctx, id)
+}

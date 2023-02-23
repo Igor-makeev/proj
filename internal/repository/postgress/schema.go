@@ -13,6 +13,7 @@ CREATE TABLE if not exists users_table
 const withdrawalTalbeSchema = `
 CREATE TABLE if not exists withdrawal_table
 (
+  user_id int references users_table(id) on delete cascade not null,
   number bigint not null unique,
   sum float DEFAULT 0.0,
   uploaded_at timestamp

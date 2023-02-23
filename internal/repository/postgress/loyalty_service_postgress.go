@@ -113,7 +113,7 @@ func (sp *StoragePostgress) Withdraw(ctx context.Context, withdraw models.Withdr
 			tx.Commit(context.Background())
 		}
 	}()
-	_, err = sp.db.Exec(ctx, "insert into withdrawal_table (number,sum,uploaded_at) values($1,$2,$3);", numberInt, withdraw.Sum, time.Now())
+	_, err = sp.db.Exec(ctx, "insert into withdrawal_table (user_id,number,sum,uploaded_at) values($1,$2,$3);", id, numberInt, withdraw.Sum, time.Now())
 	if err != nil {
 		return err
 	}
@@ -124,4 +124,26 @@ func (sp *StoragePostgress) Withdraw(ctx context.Context, withdraw models.Withdr
 		return err
 	}
 	return nil
+}
+
+func (sp *StoragePostgress) GetWithdrawals(ctx context.Context, id int) ([]models.Withdrawal, error) {
+	rows, err := sp.db.Query(ctx, "select * from withdrawal_table where user_id=$1 order by processed_at;", id)
+	if err != nil {
+
+		return nil, err
+	}
+
+	var list = make([]models.Withdrawal, 0, 100)
+	for rows.Next() {
+		var withdraw models.Withdrawal
+
+		err := rows.Scan(&withdraw.OrderNumber, &withdraw.Sum, &withdraw.ProcessedAt)
+
+		if err != nil {
+
+			return nil, err
+		}
+		list = append(list, withdraw)
+	}
+	return list, nil
 }

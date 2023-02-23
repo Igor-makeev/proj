@@ -116,5 +116,20 @@ func (h *Handler) withdrawRequest(c *gin.Context) {
 }
 
 func (h *Handler) getWithdrawInfo(c *gin.Context) {
+	id, ok := c.Get(userCtx)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": myerrors.ErrDontHaveAccess.Error()})
+		return
+	}
 
+	withdrawls, err := h.service.GetWithdrawals(c.Request.Context(), id.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	if len(withdrawls) == 0 {
+		c.JSON(http.StatusNoContent, gin.H{"info": "withdrawls not found"})
+		return
+	}
+	c.JSON(http.StatusOK, withdrawls)
 }

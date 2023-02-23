@@ -18,6 +18,7 @@ type LoyaltyServicer interface {
 	GetOrders(ctx context.Context, id int) ([]models.OrderDTO, error)
 	GetBalance(ctx context.Context, id int) (*models.UserBallance, error)
 	Withdraw(ctx context.Context, withdraw models.Withdrawal, id int) error
+	GetWithdrawals(ctx context.Context, id int) ([]models.Withdrawal, error)
 }
 
 type Service struct {
