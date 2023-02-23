@@ -43,18 +43,13 @@ func (sp *StoragePostgress) SaveOrder(ctx context.Context, order models.OrderDTO
 
 func (sp *StoragePostgress) OrderUpdate(ctx context.Context, order models.OrderDTO) {
 	numberInt, _ := strconv.Atoi(order.Number)
-	logrus.Print(order.Status)
-	logrus.Print(order.Accrual)
-	logrus.Print(numberInt)
+
 	_, err := sp.db.Exec(ctx, "update orders_table set status=$1, accrual=$2 where number=$3;", order.Status, order.Accrual, numberInt)
 	if err != nil {
 		logrus.Println(err)
 	}
 	if order.Accrual > 0 {
-		logrus.Println("+accrual")
-		logrus.Println(order.Accrual)
-		logrus.Println(order.Status)
-		logrus.Println(order.UserID)
+
 		_, err := sp.db.Exec(ctx, "update users_table set current_ballance=current_ballance+$1 where id=(select user_id from orders_table where number=$2);", order.Accrual, numberInt)
 		if err != nil {
 

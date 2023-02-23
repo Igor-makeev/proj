@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -32,7 +31,7 @@ func (h *Handler) useridentity() gin.HandlerFunc {
 		userID, err := h.service.ParseToken(headerParts[1])
 		if err != nil {
 			myerrors.NewErorResponse(c, http.StatusUnauthorized, "aslfkalskjf")
-			logrus.Print("sdasdasd")
+
 			return
 		}
 
