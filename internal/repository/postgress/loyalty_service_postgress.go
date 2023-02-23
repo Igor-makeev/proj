@@ -110,6 +110,7 @@ func (sp *StoragePostgress) Withdraw(ctx context.Context, withdraw models.Withdr
 	}()
 	_, err = sp.db.Exec(ctx, "insert into withdrawal_table (user_id,number,sum,processed_at) values($1,$2,$3,$4);", id, numberInt, withdraw.Sum, time.Now())
 	if err != nil {
+		logrus.Printf("repolevel:error: %v", err)
 		return err
 	}
 
