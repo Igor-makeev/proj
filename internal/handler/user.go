@@ -124,6 +124,7 @@ func (h *Handler) getWithdrawInfo(c *gin.Context) {
 
 	withdrawls, err := h.service.GetWithdrawals(c.Request.Context(), id.(int))
 	if err != nil {
+		logrus.Print(err)
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
