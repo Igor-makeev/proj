@@ -133,7 +133,7 @@ func (sp *StoragePostgress) GetWithdrawals(ctx context.Context, id int) ([]model
 	for rows.Next() {
 		var withdraw models.Withdrawal
 
-		err := rows.Scan(&withdraw.OrderNumber, &withdraw.Sum, &withdraw.ProcessedAt)
+		err := rows.Scan(&withdraw.UserID, &withdraw.OrderNumber, &withdraw.Sum, &withdraw.ProcessedAt)
 
 		if err != nil {
 
