@@ -45,7 +45,7 @@ Loop:
 
 			respData.UserID = UserID
 			respData.Number = orderNumber
-			respData.Status = models.StatusInvalid
+			respData.Status = models.StatusProcessing
 			out <- respData
 			break Loop
 
